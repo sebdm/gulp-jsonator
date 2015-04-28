@@ -21,7 +21,7 @@ function gulpJsonator(extension) {
 
         if (file.isBuffer()) {
             var obj = JSON.parse(file.contents.toString());
-            var defaultObj = new Jsonator(obj).generateObjectForSchema();
+            var defaultObj = new Jsonator(obj).generateObjectForSchema() || {};
             file.contents = new Buffer(JSON.stringify(defaultObj, null, 2));
             file.path = gutil.replaceExtension(file.path, extension);
             self.push(file);
