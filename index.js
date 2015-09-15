@@ -20,7 +20,15 @@ function gulpJsonator(extension) {
         }
 
         if (file.isBuffer()) {
-            var obj = JSON.parse(file.contents.toString());
+            var obj;
+            try {
+                obj = JSON.parse(file.contents.toString());
+            } catch (ex) {
+                console.log(file.contents.toString())
+                console.log('Failed to parse contents for schema: ' + file.path);
+                return;
+            }
+
             var defaultObj = new Jsonator(obj).generateObjectForSchema() || {};
             file.contents = new Buffer(JSON.stringify(defaultObj, null, 2));
             file.path = gutil.replaceExtension(file.path, extension);
